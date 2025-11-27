@@ -1,0 +1,50 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ne_afisha
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+    networks:
+      - afisha_net   # ← добавлено
+
+  db:
+    image: mysql:8.0
+    container_name: ne_afisha_db
+    command: --bind-address=0.0.0.0
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ne_afisha_db
+      MYSQL_USER: afisha
+      MYSQL_PASSWORD: afisha
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - afisha_net   # ← добавлено
+
+  node:
+    image: node:22-alpine
+    container_name: ne_afisha_node
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "5173:5173"
+    command: ["tail", "-f", "/dev/null"]
+    networks:
+      - afisha_net   # ← добавлено
+
+volumes:
+  db_data:
+
+networks:
+  afisha_net:      # ← добавлено
+    driver: bridge
