@@ -34,11 +34,9 @@
                         </button>
                     </form>
                 @endauth
-                @admin
-                    <a href="{{ route('admin.dashboard') }}" class="block py-2 px-3 text-white hover:text-orange-400">
-                        <x-mdi-shield-account class='h-12 text-red-500 hover:bg-white rounded-full'/>
-                    </a>
-                @endadmin
+                @if(auth()->check() && auth()->user()->is_admin)
+                        <a href="/admin" class="btn btn-primary"><x-ri-admin-fill class="h-12 text-red-500 hover:bg-white rounded-full"/></a>
+                        @endif
             </div>
         </div>
     </nav>    

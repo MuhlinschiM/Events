@@ -5,9 +5,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\UserController;
 
 Route::get("/", [GeneralController::class, "home"])->name("home");
 Route::get("/about", [GeneralController::class, "about"])->name("about");
+Route::get('/users', [UserController::class, 'index']);
+Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
+
 
 
 Route::get("/category/{slug}", [CategoryController::class, "show"])->name("show-category");
